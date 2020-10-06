@@ -106,8 +106,6 @@ export const getters = {
       return state.search.question.selectedFilters
     },
     getFilterDescriptions : state => {
-      // state.log && console.log("\nS-search-G-getFilterDescriptions ..." )
-      // state.log && console.log("S-search-G-getFilterDescriptions / state.search.question.filterDescriptions : \n", state.search.question.filterDescriptions )
       return state.filterDescriptions
     },
 
@@ -344,9 +342,6 @@ export const mutations = {
       // trigger re-render
       state.search.question.selectedFilters = new Map(selectedFilters)
     },
-    setFilterDescriptions (state, filterDescriptions) {
-      state.filterDescriptions = filterDescriptions
-    },
     setQuestionPage (state, pageNumber ) {
       // state.log && console.log("\nS-search-M-setQuestionPage / pageNumber : ", pageNumber )
       let newPageNumber = state.search.question.page + pageNumber
@@ -521,26 +516,122 @@ export const actions = {
 
   // FOR FILTERS
     createDatasetFilters({state, getters, commit, rootGetters}){
-      // state.log && console.log("\nS-search-A-createDatasetFilters / state : ", state )
+      let filterDescriptions = [{
+        "choices": [{
+          "choice_title": [{
+            "locale": "en",
+            "text": "Bordeaux Métropole"
+          }, {
+            "locale": "fr",
+            "text": "Bordeaux Métropole"
+          }],
+          "name": "BDX"
+        }, {
+          "choice_title": [{
+            "locale": "en",
+            "text": "Brest Métropole"
+          }, {
+            "locale": "fr",
+            "text": "Brest Métropole"
+          }],
+          "name": "BRS"
+        }, {
+          "choice_title": [{
+            "locale": "en",
+            "text": "hors aire métropolitaine"
+          }, {
+            "locale": "es",
+            "text": "hors aire métropolitaine"
+          }, {
+            "locale": "tr",
+            "text": "hors aire métropolitaine"
+          }, {
+            "locale": "de",
+            "text": "hors aire métropolitaine"
+          }, {
+            "locale": "fr",
+            "text": "hors aire métropolitaine"
+          }],
+          "name": "-"
+        }],
+        "col_name": "NOMMETRO_CODE",
+        "dataType": "text",
+        "filter_title": [{
+          "locale": "en",
+          "text": "Metropolis"
+        }, {
+          "locale": "es",
+          "text": "pendiente"
+        }, {
+          "locale": "tr",
+          "text": "yapılmamış"
+        }, {
+          "locale": "de",
+          "text": "ungemacht"
+        }, {
+          "locale": "fr",
+          "text": "Métropole"
+        }],
+        "id": "filter_2",
+        "name": "NOMMETRO_CODE__"
+      }]
 
-      const currentFiltersConfig = rootGetters['config/getEndpointConfigFilters']
-      // state.log && console.log("S-search-A-createDatasetFilters / currentFiltersConfig : ", currentFiltersConfig)
-
-      if (currentFiltersConfig && currentFiltersConfig.filter_options){
-        let filterDescriptions = currentFiltersConfig.filter_options
-        // state.log && console.log("S-search-A-createDatasetFilters / filterDescriptions : ", filterDescriptions)
-        commit('setFilterDescriptions', filterDescriptions)
-        commit('clearAllFilters')
+      return {
+        abort(){
+          searchAborted = true
+          if( ac )
+            ac.abort()
+        },
+        promise : axios({
+          method: "get",
+          url: "http://api.enthic.fr/company/ape",
+          headers : {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json'
+          },
+        })
+        .then( resp => {
+          console.log("+ + + createDatasetFilters / (axios) / resp :", resp.data);
+          var newFilter = {
+            filter_title : [{
+              "locale": "fr",
+              "text": "Secteurs d'activités"
+            }],
+            id : "APEfilterId",
+            name : "prout",
+            col_name: "NOMMETRO_CODE",
+            dataType: "text",
+            choices : []
+          }
+          for (var enthicApeCode in resp.data)
+          {
+            if (resp.data[enthicApeCode]['0'].length == 2)
+            {
+              newFilter.choices.push({
+                choice_title : [{
+                  "locale": "fr",
+                  "text": resp.data[enthicApeCode]['1'] + "(" + resp.data[enthicApeCode]['0'] + ")"
+                }],
+                name : enthicApeCode
+              });
+            }
+          }
+          console.log("+ + + createDatasetFilters / (axios) /  newFilter :", newFilter);
+          filterDescriptions.push(newFilter);
+          commit('setFilterDescriptions', filterDescriptions)
+          commit('clearAllFilters')
+          return resp;
+        })
+        .catch( err => {
+          console.log("+ + + createDatasetFilters / (axios)  err :", err);
+        })
       }
-      // state.log && console.log("S-search-A-createDatasetFilters / finished...")
-
     },
 
   // FOR QUERY SEARCH FILTERS
     toggleFilter({state, commit, dispatch, getters}, {filter, value}){
       state.log && console.log("\n// toggleFilter ..." )
       const selectedFilters = new Map(getters.getSelectedFilters)
-      // state.log && console.log("// toggleFilter / selectedFilters : ", selectedFilters);
       const selectedValues = selectedFilters.get(filter)
       if(selectedValues.has(value))
         selectedValues.delete(value)
@@ -582,11 +673,8 @@ export const actions = {
   // MAIN SEARCH ACTION
   // + - + - + - + - + - //
     search({state, commit, dispatch, getters, rootGetters}){
-
       state.log && console.log("\nS-search-A-search / main action to query endpoint..." )
-
       const search = state.search
-      // state.log && console.log("S-search-A-search / search : ", search )
 
       const selectedFilters = createSelectedFiltersForSearch( getters.getSelectedFilters )
       state.log && console.log('S-search-A-search / selectedFilters',selectedFilters)
@@ -637,8 +725,6 @@ export const actions = {
           stats : response.stats,
           total : response.total
         }})
-        // commit('setSearchResult', {result: {projects, total}})
-        // commit ('setSearchResultMap', {resultMap: {projects, total}})
       })
       .catch(error => {
         // don't report aborted fetch as errors
