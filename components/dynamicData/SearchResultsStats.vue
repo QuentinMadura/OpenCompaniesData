@@ -97,7 +97,6 @@
 
 
       <div class="no-result error" v-if="!stats">
-        <img src="/error_no_result.png">
         <div>
           <h1 class="title is-1 is-primary is-primary-b">
             <!-- Aucun projet trouvé ! -->

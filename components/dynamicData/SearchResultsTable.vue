@@ -110,8 +110,6 @@
         v-if="!pending && total === 0"
         >
 
-        <img src="/error_no_result.png">
-
         <br>
 
         <div class="has-text-centered">
@@ -126,7 +124,7 @@
             {{ basicDict.no_results_help[locale] }}
           </p>
 
-          <button v-if="hasSelectedFilters" href="/" class="button is-primary is-primary-b is-outlined" @click="clearAllFilters">
+          <button v-if="hasSelectedFilters" href="" class="button is-primary is-primary-b is-outlined" @click="clearAllFilters">
             <!-- Supprimer tous les filtres -->
             {{ basicDict.delete_all_filters[locale] }}
           </button>

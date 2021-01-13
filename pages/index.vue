@@ -64,7 +64,7 @@
             <h1 class="title is-1 has-text-centered">
               Explorez les données financières des entreprises françaises
             </h1>
-            <form action="/recherche" method="GET" class="columns">
+            <form action="recherche" method="GET" class="columns">
               <div class="column is-9">
                 <div class="control has-icons-left is-large">
                   <input type="search" name="text" class="input is-large" placeholder="Cherchez une entreprise par son nom">
@@ -95,11 +95,11 @@
           <div class="column is-8 content">
             <div class="has-text-centered content is-horizontal-center">
               <figure class="image img-large is-inline-block">
-                <img src="/favicon.ico" alt="Main logo" style="width:50%">
+                <img src="favicon.ico" alt="Main logo" style="width:50%">
               </figure>
             </div>
             <p>
-              <a href="/">OpenCompaniesData</a> est un outil de datavisualisation de la base de données <a href="https://www.enthic.fr">Enthic</a> qui contient des données sur plus de 1,6 millions d'entreprises françaises : bénéfice, chiffre d'affaires, salaire, cotisations sociales, prime participation, effectif, impôt, et plus encore (tous les détails d'un compte de résultat en fait).
+              <a href="/">OpenCompaniesData</a> est un outil de datavisualisation de la base de données <a href="/">Enthic</a> qui contient des données sur plus de 1,6 millions d'entreprises françaises : bénéfice, chiffre d'affaires, salaire, cotisations sociales, prime participation, effectif, impôt, et plus encore (tous les détails d'un compte de résultat en fait).
             </p>
             <p>
               Nous avons monté ce projet libre et ouvert, et nous le réalisons bénévolement sur notre temps libre, car nous pensons que ces données doivent être facilement accessible et compréhensible par tous, pour mieux comprendre qui crée la richesse en France, qui touche des subventions de la France, qui paye des impôts en France, et d'autres question de ce genre que plein de citoyen⋅nes et consommateur/rices français⋅ses se posent.
@@ -119,7 +119,7 @@
             <div class="columns is-centered is-multiline">
               <div class="column is-3 content is-horizontal-center">
                 <figure class="image img-mini is-inline-block">
-                  <a href="https://www.enthic.fr"><img src="/favicon.ico" alt="logo Enthic" style="width:40%"></a>
+                  <a href="https://www.enthic.fr"><img src="favicon.ico" alt="logo Enthic" style="width:40%"></a>
                 </figure>
               </div>
 
@@ -134,7 +134,7 @@
                   <a href="https://wexample.com/"><img src="https://wexample.com/wp-content/uploads/2019/08/header-site-web-v3.png" alt="Logo Wexample"></a>
                 </figure>
               </div>
-              
+
               <div class="column is-3 content is-horizontal-center">
                 <figure class="image img-mini is-inline-block">
                   <a href="https://apiviz.io/"><img src="https://raw.githubusercontent.com/co-demos/apiviz-frontend/master/static/logos/logo_apiviz_15.png" alt="Logo ApiViz"></a>
@@ -234,7 +234,6 @@ export default {
   head(){
 
     let global = this.globalConfig
-
     return {
       title: global.app_title.content,
       // meta: [

@@ -18,18 +18,12 @@ const logAllowed = ['dev', 'preprod']
 const consoleLogMode = process.env.NUXT_CONSOLELOG || 'prod'
 console.log('>>> nuxt.config.js / process.env.NUXT_CONSOLELOG :', consoleLogMode)
 
-
-const routerBase = {
-  router: {
-    base: "/"
-  }
-}
-
 export default {
-
+  router: {
+    base: "/entreprise"
+  },
+  target: 'static',
   mode: 'spa',
-
-  ...routerBase,
 
   // buildDir: 'src', // default : '.nuxt'
 
@@ -54,16 +48,6 @@ export default {
   ** Router config
   cf : https://nuxtjs.org/api/configuration-router
   */
-  router: {
-    middleware: [
-      'setAppMode',
-      'checkAuth',
-      'collapseNavbar',
-    ],
-    // scrollBehavior: function (to, from, savedPosition) {
-    //   return { x: 0, y: 0 }
-    // }
-  },
 
   /*
   ** Headers of the page
