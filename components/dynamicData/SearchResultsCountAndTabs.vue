@@ -4,30 +4,30 @@
   <div :class="`count-and-tabs`">
 
     <!-- FEEEDBACK COUNT -->
-    <div 
+    <div
       :class="['result-count-parent', open ? 'open' : undefined]"
       >
 
-      <div 
+      <div
         v-if="view != VIEW_STAT"
         :class="`results-count`"
         >
         <span class="nb has-text-primary has-text-primary-c">
           {{ pending ? '?' : total }}
-        </span> 
+        </span>
           <!-- v-if="breakpoint.btnsAsAddons" -->
-        <span 
+        <span
           :class="`${ breakpoint.btnsAsAddons ? '' : 'is-size-7' }`"
           >
           {{ translateBis(endpointConfigFilters, 'items_found' )}}
         </span>
       </div>
 
-      <div 
+      <div
         v-else
         class="results-count"
         >
-        <span 
+        <span
           :class="`has-text-primary`"
           >
           {{ translateBis(endpointConfigFilters, 'stats_text' )}}
@@ -62,104 +62,19 @@
       <!-- item : <br><pre><code>{{ JSON.stringify(item , null, 1) }}</code></pre><br>  -->
     <!-- </div> -->
 
-
-    <!-- BTNS VIEWS -->
-    <div 
-      :class="`buttons ${ breakpoint.btnsAsAddons ? 'has-addons' : '' } is-right`"
-      >
-
-      <!-- BTN TABLE -->
-      <nuxt-link 
-        v-if="typeof endpointConfigTable !== 'undefined' && endpointConfigTable.is_visible"
-        :disabled="endpointConfigTable.is_disabled" 
-        :to="endpointConfigUrlToTable && endpointConfigUrlToTable.urls[0]" 
-        :class="['has-text-centered button ', view === VIEW_TABLE ? 'is-selected is-primary is-primary-b' : 'has-text-primary-hover-c', smallButtons ? '' : '' ]" 
-        >
-        <span class="icon has-text-centered is-marginless">
-          <i class="fas fa-table"></i>
-        </span>
-        <span class="is-hidden-touch">
-          {{ basicDict.tab_table[locale] }}
-        </span>
-      </nuxt-link>
-
-      <!-- BTN LIST -->
-      <nuxt-link 
-        v-if="typeof endpointConfigList !== 'undefined' && endpointConfigList.is_visible"
-        :disabled="endpointConfigList.is_disabled" 
-        :to="endpointConfigUrlToList && endpointConfigUrlToList.urls[0]" 
-        :class="['has-text-centered button ', view === VIEW_LIST ? 'is-selected is-primary is-primary-b' : 'has-text-primary-hover-c', smallButtons ? '' : '' ]" 
-        >
-        <span class="icon has-text-centered is-marginless">
-          <i class="fas fa-th-large"></i>
-        </span>
-        <span class="is-hidden-touch">
-          {{ basicDict.tab_list[locale] }}
-        </span>
-      </nuxt-link>
-
-      <!-- BTN MAP -->
-      <nuxt-link
-        v-if="typeof endpointConfigMap !== 'undefined' && endpointConfigMap.is_visible"
-        :disabled="endpointConfigMap.is_disabled" 
-        :to="endpointConfigUrlToMap && endpointConfigUrlToMap.urls[0]" 
-        :class="['has-text-centered button ', view === VIEW_MAP ? 'is-selected is-primary is-primary-b' : 'has-text-primary-hover-c', smallButtons ? '' : '' ]" 
-        >
-        <span class="icon has-text-centered is-marginless">
-          <i class="far fa-map"></i>
-        </span>
-        <span class="is-hidden-touch">
-          {{ basicDict.tab_map[locale] }}
-        </span>
-      </nuxt-link>
-
-      <!-- BTN STATS -->
-      <nuxt-link
-        v-if="typeof endpointConfigStat !== 'undefined' && endpointConfigStat.is_visible"
-        :disabled="endpointConfigStat.is_disabled" 
-        :to="endpointConfigUrlToStat && endpointConfigUrlToStat.urls[0]" 
-        :class="['has-text-centered button ', view === VIEW_STAT ? 'is-selected is-primary is-primary-b' : 'has-text-primary-hover-c', smallButtons ? '' : '' ]" 
-        >
-        <span class="icon has-text-centered is-marginless">
-          <i class="far fa-chart-bar"></i>
-        </span>
-        <span class="is-hidden-touch">
-          {{ basicDict.tab_stat[locale] }}
-        </span>
-      </nuxt-link>
-
-      <!-- BTN CALENDAR -->
-      <nuxt-link
-        v-if="typeof endpointConfigCalendar !== 'undefined' && endpointConfigCalendar.is_visible"
-        :disabled="endpointConfigCalendar.is_disabled" 
-        :to="endpointConfigUrlToCalendar && endpointConfigUrlToCalendar.urls[0]" 
-        :class="['has-text-centered button ', view === VIEW_CALENDAR ? 'is-selected is-primary is-primary-b' : 'has-text-primary-hover-c', smallButtons ? '' : '' ]" 
-        >
-        <span class="icon has-text-centered is-marginless">
-          <i class="far fa-calendar-alt"></i>
-        </span>
-        <span class="is-hidden-touch">
-          {{ basicDict.tab_calendar[locale] }}
-        </span>
-      </nuxt-link>
-
-
-    </div>
-
-
     <!-- ADDITIONAL BUTTONS -->
-    <div 
+    <div
       :class="'buttons is-right'"
       >
 
       <!-- SHUFFLER -->
-      <a 
+      <a
         v-if="localRouteConfig.has_shuffle"
         class="button has-text-primary-hover-c tooltip is-tooltip-bottom"
         :data-tooltip="basicDict.shuffle[locale]"
         @click="reShuffle()"
         >
-        <span 
+        <span
           :class="`icon ${ shuffleSeed ? 'has-text-primary-c' : ''}`"
           >
           <i class="fas fa-random"></i>
@@ -167,14 +82,14 @@
       </a>
 
       <!-- EXPORT DATASET-->
-      <a 
+      <a
         v-if="endpointConfigFilters.has_export && endpointConfigExport.is_visible"
         class="button has-text-primary-hover-c tooltip is-tooltip-bottom"
         :data-tooltip="basicDict.tab_export[locale]"
         @click="exportDataset()"
         :disabled="endpointConfigExport.is_disabled"
         >
-        <span 
+        <span
           class="icon"
           >
           <i class="fas fa-download"></i>
@@ -194,14 +109,14 @@
   import { isMobile } from 'mobile-device-detect'
 
   import { VIEW_TABLE, VIEW_LIST, VIEW_MAP, VIEW_STAT, VIEW_CALENDAR, responsiveBreakpoint } from '../../config/constants.js'
-  import { BasicDictionnary } from "~/config/basicDict.js" 
+  import { BasicDictionnary } from "~/config/basicDict.js"
 
   export default {
 
     name: 'SearchResultsCountAndTabs',
-    
+
     props: [
-      'view', 
+      'view',
       'open'
     ],
 
@@ -210,11 +125,11 @@
 
         VIEW_TABLE,
         VIEW_LIST,
-        VIEW_MAP, 
+        VIEW_MAP,
         VIEW_STAT,
         VIEW_CALENDAR,
 
-        basicDict : BasicDictionnary, 
+        basicDict : BasicDictionnary,
         smallButtons : false,
 
       }
@@ -243,7 +158,7 @@
       this.log && console.log('C-SearchResultsCountAndTabs / this.endpointConfigMap     : ', this.endpointConfigMap)
       this.log && console.log('C-SearchResultsCountAndTabs / this.endpointConfigStat    : ', this.endpointConfigStat)
       this.log && console.log('C-SearchResultsCountAndTabs / this.endpointConfigExport  : ', this.endpointConfigExport)
-    
+
       this.log && console.log('C-SearchResultsCountAndTabs / this.endpointConfigUrlToTable : ', this.endpointConfigUrlToTable)
       this.log && console.log('C-SearchResultsCountAndTabs / this.endpointConfigUrlToList  : ', this.endpointConfigUrlToList)
       this.log && console.log('C-SearchResultsCountAndTabs / this.endpointConfigUrlToMap   : ', this.endpointConfigUrlToMap)
@@ -253,7 +168,7 @@
     computed: {
 
       ...mapState({
-        log : state => state.log, 
+        log : state => state.log,
         locale : state => state.locale,
         breakpoint : state => state.breakpoint,
         localRouteConfig : state => state.config.localRouteConfig,
@@ -361,7 +276,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-   
+
   margin-bottom: 1em;
 
   .result-count-parent{
@@ -375,7 +290,7 @@
 
     &.open{
       background-color: $apiviz-grey-background;
-      
+
       top: -1rem;
       padding-top: 1rem;
     }
