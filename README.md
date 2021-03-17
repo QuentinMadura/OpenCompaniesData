@@ -144,7 +144,7 @@ pre-commit run --all-files
 ```
 
 Skip verifications
-To skip pre-commit verifications, you may add *--no-verify* at the end of your commitment. 
+To skip pre-commit verifications, you may add *--no-verify* at the end of your commitment.
 ```
 git commit -m '[+] pre-commit <- documentation' --no-verify
 ```
